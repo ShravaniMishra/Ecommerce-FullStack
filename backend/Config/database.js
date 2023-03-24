@@ -1,9 +1,16 @@
-const mongoose = require('mongoose');
-const {config} = require("dotenv")
-config()
+const mongoose = require("mongoose");
 
-const connection = mongoose.connect(process.env.data_url)
+const connectDatabase = (cb) => {
+  mongoose
+    .connect(process.env.DB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useCreateIndex: true,
+    })
+    .then((data) => {
+      console.log(`Mongodb connected with server: ${data.connection.host}`);
+      cb();
+    });
+};
 
-module.exports={
-    connection
-}
+module.exports = connectDatabase;
